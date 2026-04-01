@@ -3,6 +3,7 @@ from langgraph.graph import StateGraph
 
 def chatbot(graph: StateGraph):
     app = graph.compile()
+    history = []
 
     while True:
         user_input = input("Anda: ")
@@ -14,13 +15,17 @@ def chatbot(graph: StateGraph):
             "messages": [
                 {"role": "user", "content": user_input}
             ],
-            "history": [],
+            "history": history,
         })
 
         print("Chatbot:", result["messages"][-1].content)
 
+        history.append(f"User: {user_input}")
+        history.append(f"Chatbot: {result['messages'][-1].content}")
+
 def chatbot_stream(graph: StateGraph):
     app = graph.compile()
+    history = []
 
     while True:
         user_input = input("Anda: ")
@@ -32,7 +37,7 @@ def chatbot_stream(graph: StateGraph):
             "messages": [
                 {"role": "user", "content": user_input},
             ],
-            "history": [],
+            "history": history,
         }):
             for key, value in output.items():
                 if key == "filter_agent":
@@ -42,6 +47,8 @@ def chatbot_stream(graph: StateGraph):
                     print(f"🔀 Routing ke agent {next_agent}")
                 else:
                     print(f"🤖 {key}:\n{value['messages'][0].content}")
+                    history.append(f"User: {user_input}")
+                    history.append(f"Chatbot: {value['messages'][0].content}")
 
 if __name__ == "__main__":
     graph = ShoppingAssistantGraph()

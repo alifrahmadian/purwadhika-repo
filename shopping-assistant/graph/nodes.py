@@ -3,6 +3,8 @@ from data import *
 from .state import State
 from config import *
 
+from datetime import datetime
+
 def filter_agent(state: State):
     """
     Node ini mengklasifikasikan intent pertanyaan user.
@@ -59,14 +61,16 @@ def promo_agent(state: State):
     """
     question = state["messages"][0]
     history  = state["history"]
+    day = datetime.now().strftime("%A") 
 
     prompt = f"""
     Kamu adalah chatbot yang membantu pelanggan dalam percakapan tentang promo
-    yang ditawarkan oleh "Toko Pakaian Purwadhika". Jawab dengan ramah dan sopan.
+    yang ditawarkan oleh "Toko Pakaian Purwadhika" sesuai dengan hari. Jawab dengan ramah dan sopan.
     Gunakan chat history untuk menangkap konteks percakapan.
     
     {PROMOS}
 
+    hari: {day}
     chat history: {history}
     question: {question}
     """

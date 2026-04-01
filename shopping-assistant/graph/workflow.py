@@ -35,24 +35,32 @@ if __name__ == "__main__":
     graph = ShoppingAssistantGraph()
     app = graph.compile()
 
+    history_invoke = []
+
     # test dengan invoke
     print("=" * 60 + "\nTesting invoke method\n" + "=" * 60)
     result = app.invoke({
         "messages": [
             {"role": "user", "content": "ada promo apa?"}
         ],
-        "history": [],
+        "history": history_invoke,
     })
 
     print(result["messages"][-1].content)
+
+    history_invoke.append(f"User: ada promo apa?")
+    history_invoke.append(f"Chatbot: {result['messages'][-1].content}")
     
     # test dengan stream 
     print("=" * 60 + "\nTesting stream method\n" + "=" * 60)
+
+    history_stream = []
+
     for output in app.stream({
         "messages": [
             {"role": "user", "content": "ada promo apa saja?"}
         ],
-        "history": [],
+        "history": history_stream,
         }):
         
         for key,value in output.items():
@@ -61,4 +69,7 @@ if __name__ == "__main__":
                 print(f"🧠 Filter agent memutuskan untuk menjalankan node: {next_agent}_agent")
             else:
                 print(f"🤖 {key}_agent:\n{value['messages'][0].content}")
+                
+                history_stream.append(f"User: ada promo apa saja?")
+                history_stream.append(f"Chatbot: {value['messages'][0].content}")
 
