@@ -28,6 +28,7 @@ class ShoppingAssistantGraph(StateGraph):
         self.add_edge("product_agent", END)
         self.add_edge("promo_agent", END)
         self.add_edge("basic_agent", END)
+    
 
 # Buat test untuk memastikan workflow berjalan dengan benar
 if __name__ == "__main__":

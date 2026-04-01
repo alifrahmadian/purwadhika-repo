@@ -1,8 +1,8 @@
-from graph import ShoppingAssistantGraph
+from graph.workflow import ShoppingAssistantGraph
 
 def chatbot():
     print("=" * 60)
-    print("🛍️  Selamat datang di Toko Pakaian Purwadhika! (Pendekatan A)")
+    print("🛍️  Selamat datang di Toko Pakaian Purwadhika!")
     print("   Ketik 'quit' / 'exit' / 'q' untuk keluar.")
     print("=" * 60)
 
