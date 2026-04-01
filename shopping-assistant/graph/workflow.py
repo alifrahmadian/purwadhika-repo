@@ -35,6 +35,8 @@ if __name__ == "__main__":
     graph = ShoppingAssistantGraph()
     app = graph.compile()
 
+    # test dengan invoke
+    print("=" * 60 + "\nTesting invoke method\n" + "=" * 60)
     result = app.invoke({
         "messages": [
             {"role": "user", "content": "ada promo apa?"}
@@ -44,3 +46,19 @@ if __name__ == "__main__":
 
     print(result["messages"][-1].content)
     
+    # test dengan stream 
+    print("=" * 60 + "\nTesting stream method\n" + "=" * 60)
+    for output in app.stream({
+        "messages": [
+            {"role": "user", "content": "ada promo apa saja?"}
+        ],
+        "history": [],
+        }):
+        
+        for key,value in output.items():
+            if key == "filter_agent":
+                next_agent = value["messages"][0].content.strip().lower()
+                print(f"🧠 Filter agent memutuskan untuk menjalankan node: {next_agent}_agent")
+            else:
+                print(f"🤖 {key}_agent:\n{value['messages'][0].content}")
+
