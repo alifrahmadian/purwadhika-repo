@@ -1,5 +1,8 @@
 from langchain_qdrant import QdrantVectorStore
 from shopping_assistant.config import *
+from scripts.load_qdrant import load_qdrant
+
+load_qdrant() 
 
 def retrieve_documents(collection_name: str, query: str, top_k: int = 5):
     qdrant_loader = QdrantLoader(collection_name=collection_name)

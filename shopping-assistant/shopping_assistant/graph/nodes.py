@@ -3,6 +3,8 @@ from shopping_assistant.dummy_data import *
 from .state import State
 from shopping_assistant.config import *
 
+from shopping_assistant.utils.retriever import *
+
 from datetime import datetime
 
 def filter_agent(state: State):
@@ -34,6 +36,12 @@ def filter_agent(state: State):
     return {"messages": [response]}
 
 def product_agent(state: State):
+    products = retrieve_documents(
+        collection_name="amazon_products", 
+        query=state["messages"][0].content, 
+        top_k=5
+        )
+
     """
     Node ini menjawab pertanyaan seputar produk toko.
     PENTING: Ambil messages[0], yaitu pertanyaan ASLI user,
@@ -46,7 +54,7 @@ def product_agent(state: State):
     dari "Toko Pakaian Purwadhika". Jawab pertanyaan dengan ramah, sopan, dan persuasif dalam menawarkan
     barang kepada pelanggan. Gunakan chat history untuk menangkap konteks percakapan.
     
-    {PRODUCTS}
+    {products}
     
     chat history: {history}
     question: {question}
